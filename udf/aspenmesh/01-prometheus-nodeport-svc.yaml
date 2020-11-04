@@ -19,3 +19,24 @@ spec:
     app: aspen-mesh-metrics-collector
   sessionAffinity: None
   type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/scrape: "true"
+  labels:
+    app: aspen-mesh-metrics-collector
+    release: istiod
+  name: prometheus
+  namespace: istio-system
+spec:
+  ports:
+  - name: prometheus
+    port: 9090
+    protocol: TCP
+    targetPort: 9090
+  selector:
+    app: aspen-mesh-metrics-collector
+  sessionAffinity: None
+  type: ClusterIP
