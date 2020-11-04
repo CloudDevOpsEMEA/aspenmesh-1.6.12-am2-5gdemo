@@ -29,6 +29,9 @@ gateways:
 
 prometheus:
   enabled: true
+
+jaeger:
+  enabled: true
   
 cassandra:
   enabled: true
