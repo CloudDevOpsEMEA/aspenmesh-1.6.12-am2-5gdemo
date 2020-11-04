@@ -1,0 +1,63 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: smf-pro
+  namespace: default
+  labels:
+    app: smf
+    version: pro
+spec:
+  selector:
+    matchLabels:
+      app: smf
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: smf
+        version: pro
+    spec:
+      containers:
+      - name: smf
+        image:  mangarcg/smf:v1.0.1
+        ports:
+        - containerPort: 2000 
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: smf
+  namespace: default
+spec:
+  selector:
+    app: smf
+  ports:
+    - name: http
+      protocol: TCP
+      port: 2000
+      targetPort: 2000
+
+# ---
+
+# apiVersion: networking.k8s.io/v1beta1
+# kind: Ingress
+# metadata:
+#   name: smf
+#   namespace: default
+#   annotations:
+#     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+#     nginx.ingress.kubernetes.io/rewrite-target: /
+# spec:
+#   tls:
+#   - hosts:
+#     - smf.k8s.intra.local
+#     secretName: none-cert
+#   rules:
+#   - host: smf.k8s.intra.local
+#     http:
+#       paths:
+#       - path: /
+#         backend:
+#           serviceName: smf
+#           servicePort: 2000
