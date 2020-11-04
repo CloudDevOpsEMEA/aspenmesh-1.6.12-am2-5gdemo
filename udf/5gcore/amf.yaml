@@ -38,25 +38,63 @@ spec:
       targetPort: 2000
 ---
 
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
 metadata:
   name: amf
   namespace: default
-  annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  tls:
-  - hosts:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
     - amf.k8s.intra.local
-    secretName: none-cert
-  rules:
-  - host: amf.k8s.intra.local
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: amf
-          servicePort: 2000
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: amf
+spec:
+  hosts:
+  - amf.k8s.intra.local
+  gateways:
+  - amf
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        port:
+          number: 2000
+        host: amf
+---
+
+# apiVersion: networking.k8s.io/v1beta1
+# kind: Ingress
+# metadata:
+#   name: amf
+#   namespace: default
+#   annotations:
+#     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+#     nginx.ingress.kubernetes.io/rewrite-target: /
+# spec:
+#   tls:
+#   - hosts:
+#     - amf.k8s.intra.local
+#     secretName: none-cert
+#   rules:
+#   - host: amf.k8s.intra.local
+#     http:
+#       paths:
+#       - path: /
+#         backend:
+#           serviceName: amf
+#           servicePort: 2000
 
