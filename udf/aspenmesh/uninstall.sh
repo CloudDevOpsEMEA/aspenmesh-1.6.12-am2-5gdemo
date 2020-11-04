@@ -5,3 +5,5 @@ helm uninstall istiod --namespace istio-system
 helm uninstall istio-ingress --namespace istio-system
 helm uninstall istio-egress --namespace istio-system
 # helm uninstall istio-telemetry --namespace istio-system
+
+kubectl delete namespace istio-system
