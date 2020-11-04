@@ -1,0 +1,25 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: smf-lab
+  labels:
+    app: smf
+    version: lab
+spec:
+  selector:
+    matchLabels:
+      app: smf
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: smf
+        version: lab
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - name: smf
+        image:  mangarcg/smf:v1.0.3
+        ports:
+        - containerPort: 2000 
