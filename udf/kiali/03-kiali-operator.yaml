@@ -169,7 +169,7 @@ data:
           use_kiali_token: false
           username: ""
         enabled: true
-        in_cluster_url: http://tracing/jaeger
+        in_cluster_url: http://aspen-mesh-jaeger-query/jaeger
         namespace_selector: true
         url: ""
         whitelist_istio_system:
