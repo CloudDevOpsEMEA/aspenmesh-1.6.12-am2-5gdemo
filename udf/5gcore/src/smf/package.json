@@ -1,0 +1,13 @@
+{
+  "name": "smf",
+  "version": "v1.0.1",
+  "description": "SMF on Docker",
+  "author": "Manuel García <mangarcg@gmail.com>",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.1"
+  }
+}
